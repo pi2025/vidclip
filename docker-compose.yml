@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  vidclip:
+    build: .
+    container_name: vidclip-app
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./output:/app/output
+      - ./logs:/app/logs
+      - ./uploads:/app/uploads
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
